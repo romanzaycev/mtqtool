@@ -1,8 +1,29 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>net5.0</TargetFramework>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <TrimMode>copyused</TrimMode>
+        <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     </PropertyGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\MTQtoolRuntime\MTQtoolRuntime.csproj" />
+        <PackageReference Include="Avalonia" Version="0.10.13" />
+        <PackageReference Include="Avalonia.Desktop" Version="0.10.13" />
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.13" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.13" />
+        <PackageReference Include="XamlNameReferenceGenerator" Version="1.3.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Models\" />
+        <AvaloniaResource Include="Assets\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <TrimmableAssembly Include="Avalonia.Themes.Fluent" />
+        <TrimmableAssembly Include="Avalonia.Themes.Default" />
+    </ItemGroup>
 </Project>
