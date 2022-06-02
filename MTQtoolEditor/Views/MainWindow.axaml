@@ -8,14 +8,20 @@
         d:DesignHeight="450"
         x:Class="MTQtoolEditor.Views.MainWindow"
         Icon="/Assets/logo.ico"
-        Title="MTQtool Editor">
+        Title="MTQtool Editor"
+        MinWidth="800"
+        MinHeight="600">
 
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Center"/>
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock Text="{Binding Greeting}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+        />
+        <Button Width="160" Command="{Binding OnToggleTextCommand}">Click me</Button>
+    </StackPanel>
 
 </Window>
