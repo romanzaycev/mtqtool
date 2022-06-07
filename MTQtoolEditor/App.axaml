@@ -6,7 +6,33 @@
         <local:ViewLocator/>
     </Application.DataTemplates>
 
+    <Application.Resources>
+        <SolidColorBrush x:Key="SystemControlBackgroundAltHighBrush" Color="#FF262626"/>
+        
+        <SolidColorBrush x:Key="GridSplitterBorderBrush" Color="Transparent"/>
+        <SolidColorBrush x:Key="GridSplitterBrush" Color="#FF343434"/>
+    </Application.Resources>
+    
     <Application.Styles>
         <FluentTheme Mode="Dark"/>
+        
+        <Style Selector="GridSplitter">
+            <Setter Property="ShowsPreview" Value="True" />
+        </Style>
+        
+        <Style Selector="GridSplitter[ResizeDirection=Rows] > Border">
+            <Setter Property="Height" Value="5" />
+            <Setter Property="Background" Value="{DynamicResource GridSplitterBrush}" />
+            <Setter Property="BorderThickness" Value="0 2" />
+            <Setter Property="BorderBrush" Value="{DynamicResource GridSplitterBorderBrush}" />
+        </Style>
+        
+        <Style Selector="GridSplitter[ResizeDirection=Columns] > Border">
+            <Setter Property="Width" Value="5" />
+            <Setter Property="Background" Value="{DynamicResource GridSplitterBrush}" />
+            <Setter Property="BorderThickness" Value="2 0" />
+            <Setter Property="BorderBrush" Value="{DynamicResource GridSplitterBorderBrush}" />
+        </Style>
+        
     </Application.Styles>
 </Application>

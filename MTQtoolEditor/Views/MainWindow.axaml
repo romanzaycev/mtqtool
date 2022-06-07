@@ -10,18 +10,113 @@
         Icon="/Assets/logo.ico"
         Title="MTQtool Editor"
         MinWidth="800"
-        MinHeight="600">
+        MinHeight="600"
+        Width="1024"
+        Height="768"
+        WindowState="Maximized"
+        WindowStartupLocation="CenterScreen">
 
     <Design.DataContext>
-        <vm:MainWindowViewModel/>
+        <vm:MainWindowViewModel />
     </Design.DataContext>
 
-    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBlock Text="{Binding Greeting}"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-        />
-        <Button Width="160" Command="{Binding OnToggleTextCommand}">Click me</Button>
-    </StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" /><!-- Menu -->
+            <RowDefinition Height="Auto" /><!-- Toolbar -->
+            <RowDefinition Height="*" /><!-- WA Zone -->
+            <RowDefinition Height="0.75" /><!-- Project splitter -->
+            <RowDefinition Height="200" MinHeight="150" MaxHeight="800" /><!-- Project -->
+        </Grid.RowDefinitions>
+
+        <!-- #region Menu -->
+        <DockPanel Grid.Row="0">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_Open" />
+                    <Separator />
+                    <MenuItem Header="E_xit" Click="MenuItem_OnClick" />
+                </MenuItem>
+                <MenuItem Header="_Edit">
+                    <MenuItem Header="_Undo" />
+                    <MenuItem Header="_Redo" />
+                </MenuItem>
+            </Menu>
+            <Border DockPanel.Dock="Bottom" Background="{DynamicResource SystemChromeLowColor}" Height="1"></Border>
+        </DockPanel>
+        <!-- #endregon -->
+
+        <!-- #region Toolbar -->
+        <DockPanel Grid.Row="1">
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                <TextBlock Text="Toolbar" Padding="10"></TextBlock>
+            </StackPanel>
+            <Border Background="{DynamicResource SystemChromeLowColor}" Height="1" DockPanel.Dock="Bottom"></Border>
+        </DockPanel>
+        <!-- #endregon -->
+
+        <!-- #region WA Zone -->
+        <Grid Grid.Row="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200" MaxWidth="400" MinWidth="150"></ColumnDefinition> <!-- Navigator -->
+                    <ColumnDefinition Width="0.75"></ColumnDefinition> <!-- Navigator splitter -->
+                    <ColumnDefinition Width="*"></ColumnDefinition> <!-- Work area -->
+                    <ColumnDefinition Width="0.75"></ColumnDefinition> <!-- Inspector splitter -->
+                    <ColumnDefinition Width="300" MaxWidth="500" MinWidth="150"></ColumnDefinition> <!-- Inspector -->
+                </Grid.ColumnDefinitions>
+                
+                <!-- #region Navigator -->
+                <DockPanel Grid.Column="0">
+                    <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
+                        <TextBlock Text="Navigator" Padding="10"></TextBlock>
+                    </StackPanel>
+                </DockPanel>
+                <!-- #endregion -->
+                
+                <!-- #region Navigator splitter -->
+                <GridSplitter Grid.Column="1" ResizeDirection="Columns" />
+                <!-- #endregion -->
+                
+                <!-- #region Work area -->
+                <Grid Grid.Column="2">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Greeting}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                        <Button Width="160" Command="{Binding OnToggleTextCommand}">Click me</Button>
+                    </StackPanel>
+                </Grid>
+                <!-- #endregion -->
+                
+                <!-- #region Inspector splitter -->
+                <GridSplitter Grid.Column="3" ResizeDirection="Columns" />
+                <!-- #endregion -->
+                
+                <!-- #region Inspector -->
+                <DockPanel Grid.Column="4">
+                    <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
+                        <TextBlock Text="Inspector" Padding="10"></TextBlock>
+                    </StackPanel>
+                </DockPanel>
+                <!-- #endregion -->
+            </Grid>
+        </Grid>
+        <!-- #endregon -->
+
+        <!-- #region Project splitter -->
+        <GridSplitter Grid.Row="3" ResizeDirection="Rows" />
+        <!-- #endregion -->
+
+        <!-- #region Project -->
+        <Grid Grid.Row="4">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
+                    <TextBlock Text="Project" Padding="10"></TextBlock>
+                </StackPanel>
+            </DockPanel>
+        </Grid>
+        <!-- #endregon -->
+    </Grid>
 
 </Window>
