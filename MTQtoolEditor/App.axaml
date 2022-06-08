@@ -1,16 +1,26 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:MTQtoolEditor"
+             xmlns:converters="using:MTQtoolEditor.Converters"
              x:Class="MTQtoolEditor.App">
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>
 
     <Application.Resources>
+        <converters:BoolToOrientationConverter x:Key="BoolToOrientationConverter" />
+        
         <SolidColorBrush x:Key="SystemControlBackgroundAltHighBrush" Color="#FF262626"/>
         
         <SolidColorBrush x:Key="GridSplitterBorderBrush" Color="Transparent"/>
         <SolidColorBrush x:Key="GridSplitterBrush" Color="#FF343434"/>
+        
+        <LinearGradientBrush x:Key="PanelHeaderBrush" StartPoint="50%,0%" EndPoint="50%,100%">
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Offset="0" Color="#FF3B3B3B"></GradientStop>
+                <GradientStop Offset="1" Color="#FF2C2C2C"></GradientStop>
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
     </Application.Resources>
     
     <Application.Styles>

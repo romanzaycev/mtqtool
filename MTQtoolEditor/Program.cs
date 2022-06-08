@@ -1,7 +1,8 @@
 ﻿using System;
 using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.ReactiveUI;
+using Projektanker.Icons.Avalonia;
+using Projektanker.Icons.Avalonia.MaterialDesign;
 
 namespace MTQtoolEditor
 {
@@ -15,6 +16,8 @@ namespace MTQtoolEditor
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()
                 .LogToTrace()
+                .WithIcons(container => container
+                    .Register<MaterialDesignIconProvider>())
                 .UseReactiveUI();
     }
 }

@@ -3,6 +3,8 @@
         xmlns:vm="using:MTQtoolEditor.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+        xmlns:uc="clr-namespace:MTQtoolEditor.Controls"
         mc:Ignorable="d"
         d:DesignWidth="800"
         d:DesignHeight="450"
@@ -20,7 +22,7 @@
         <vm:MainWindowViewModel />
     </Design.DataContext>
 
-    <Grid>
+    <Grid Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" /><!-- Menu -->
             <RowDefinition Height="Auto" /><!-- Toolbar -->
@@ -57,46 +59,66 @@
 
         <!-- #region WA Zone -->
         <Grid Grid.Row="2">
-            <Grid>
+            <Grid Name="WaZoneGrid">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200" MaxWidth="400" MinWidth="150"></ColumnDefinition> <!-- Navigator -->
+                    <ColumnDefinition Width="*" MaxWidth="400" MinWidth="150"></ColumnDefinition> <!-- Navigator -->
                     <ColumnDefinition Width="0.75"></ColumnDefinition> <!-- Navigator splitter -->
                     <ColumnDefinition Width="*"></ColumnDefinition> <!-- Work area -->
                     <ColumnDefinition Width="0.75"></ColumnDefinition> <!-- Inspector splitter -->
-                    <ColumnDefinition Width="300" MaxWidth="500" MinWidth="150"></ColumnDefinition> <!-- Inspector -->
+                    <ColumnDefinition Width="*" MaxWidth="400" MinWidth="150"></ColumnDefinition> <!-- Inspector -->
                 </Grid.ColumnDefinitions>
-                
+
                 <!-- #region Navigator -->
-                <DockPanel Grid.Column="0">
+                <DockPanel Grid.Column="0" VerticalAlignment="Top">
                     <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
-                        <TextBlock Text="Navigator" Padding="10"></TextBlock>
+                        <uc:PanelHeader Title="Navigator"
+                                        Icon="mdi-folder"
+                                        HideDirection="Left"
+                                        DefinitionIndex="0"
+                                        Splitter="{Binding #NavigatorSplitter}"
+                                        ContentVisual="{Binding #NavigatorContent}"
+                                        GridLink="{Binding #WaZoneGrid}" />
+                        <StackPanel DockPanel.Dock="Top" Name="NavigatorContent">
+                            <TextBlock Text="Content"></TextBlock>
+                        </StackPanel>
                     </StackPanel>
                 </DockPanel>
                 <!-- #endregion -->
-                
+
                 <!-- #region Navigator splitter -->
-                <GridSplitter Grid.Column="1" ResizeDirection="Columns" />
+                <GridSplitter Grid.Column="1" ResizeDirection="Columns" Name="NavigatorSplitter" />
                 <!-- #endregion -->
-                
+
                 <!-- #region Work area -->
                 <Grid Grid.Column="2">
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock Text="{Binding Greeting}"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center" />
-                        <Button Width="160" Command="{Binding OnToggleTextCommand}">Click me</Button>
+                        <Button Width="160"
+                                Command="{Binding OnToggleTextCommand}"
+                                i:Attached.Icon="mdi-cards-heart">
+                            <StackPanel Orientation="Horizontal">
+                                <i:Icon Value="mdi-cards-heart" />
+                                <TextBlock>Click me</TextBlock>
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
                 </Grid>
                 <!-- #endregion -->
-                
+
                 <!-- #region Inspector splitter -->
-                <GridSplitter Grid.Column="3" ResizeDirection="Columns" />
+                <GridSplitter Grid.Column="3" ResizeDirection="Columns" Name="InspectorSplitter" />
                 <!-- #endregion -->
-                
+
                 <!-- #region Inspector -->
                 <DockPanel Grid.Column="4">
                     <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
-                        <TextBlock Text="Inspector" Padding="10"></TextBlock>
+                        <uc:PanelHeader Title="Inspector"
+                                        HideDirection="Right"
+                                        DefinitionIndex="4"
+                                        Splitter="{Binding #InspectorSplitter}"
+                                        GridLink="{Binding #WaZoneGrid}"/>
                     </StackPanel>
                 </DockPanel>
                 <!-- #endregion -->
@@ -105,14 +127,18 @@
         <!-- #endregon -->
 
         <!-- #region Project splitter -->
-        <GridSplitter Grid.Row="3" ResizeDirection="Rows" />
+        <GridSplitter Grid.Row="3" ResizeDirection="Rows" Name="ProjectSplitter" />
         <!-- #endregion -->
 
         <!-- #region Project -->
         <Grid Grid.Row="4">
             <DockPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
-                    <TextBlock Text="Project" Padding="10"></TextBlock>
+                    <uc:PanelHeader Title="Project"
+                                    HideDirection="Bottom"
+                                    DefinitionIndex="4"
+                                    GridLink="{Binding #MainGrid}"
+                                    Splitter="{Binding #ProjectSplitter}"/>
                 </StackPanel>
             </DockPanel>
         </Grid>
