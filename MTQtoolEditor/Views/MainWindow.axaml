@@ -115,6 +115,7 @@
                 <DockPanel Grid.Column="4">
                     <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
                         <uc:PanelHeader Title="Inspector"
+                                        Icon="mdi-hexagon-multiple"
                                         HideDirection="Right"
                                         DefinitionIndex="4"
                                         Splitter="{Binding #InspectorSplitter}"
@@ -135,6 +136,7 @@
             <DockPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
                     <uc:PanelHeader Title="Project"
+                                    Icon="mdi-tools"
                                     HideDirection="Bottom"
                                     DefinitionIndex="4"
                                     GridLink="{Binding #MainGrid}"

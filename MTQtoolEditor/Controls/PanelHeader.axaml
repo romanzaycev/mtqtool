@@ -9,17 +9,20 @@
     <DockPanel>
         <Border Background="{StaticResource PanelHeaderBrush}"
                 Padding="8 6" DockPanel.Dock="Top">
-            <StackPanel Orientation="{Binding !$parent[uc:PanelHeader].IsCollapsed, Converter={StaticResource BoolToOrientationConverter}}">
+            <StackPanel
+                Orientation="{Binding !$parent[uc:PanelHeader].IsChangeOrientation, Converter={StaticResource BoolToOrientationConverter}}">
                 <i:Icon Value="{Binding $parent[uc:PanelHeader].Icon}"
                         IsVisible="{Binding !!$parent[uc:PanelHeader].Icon}"
                         Margin="2 2"
                         VerticalAlignment="Center"
-                        HorizontalAlignment="Left" />
+                        HorizontalAlignment="Left"
+                        DoubleTapped="ToggleState" />
                 <TextBlock Text="{Binding $parent[uc:PanelHeader].Title}"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Left"
                            Margin="2 2"
-                           IsVisible="{Binding !$parent[uc:PanelHeader].IsCollapsed}">
+                           IsVisible="{Binding !$parent[uc:PanelHeader].IsCollapsed}"
+                           DoubleTapped="ToggleState">
                 </TextBlock>
                 <Button i:Attached.Icon="{Binding $parent[uc:PanelHeader].HideDirectionIcon}"
                         VerticalAlignment="Center"
@@ -27,7 +30,7 @@
                         FontSize="8"
                         Padding="3 2"
                         Margin="2 2"
-                        Click="ToggleButton_OnClick" />
+                        Click="ToggleState" />
             </StackPanel>
         </Border>
         <Border Height="1" Background="#FF424242" DockPanel.Dock="Bottom" />

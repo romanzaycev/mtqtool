@@ -1,8 +1,8 @@
-using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using MTQtoolEditor.Controls.Helpers;
 
 namespace MTQtoolEditor.Controls
 {
@@ -26,6 +26,7 @@ namespace MTQtoolEditor.Controls
         private Grid? _gridLink;
         private int? _definitionIndex;
         private string _hideDirectionIcon = FallbackHideIcon;
+        private bool _isChangeOrientation;
 
         public static readonly DirectProperty<PanelHeader, string> TitleProperty =
             AvaloniaProperty.RegisterDirect<PanelHeader, string>(
@@ -80,6 +81,14 @@ namespace MTQtoolEditor.Controls
                 nameof(HideDirectionIcon),
                 o => o.HideDirectionIcon,
                 (o, v) => o.HideDirectionIcon = v);
+        
+        protected static readonly DirectProperty<PanelHeader, bool> IsChangeOrientationProperty =
+            AvaloniaProperty.RegisterDirect<PanelHeader, bool>(
+                nameof(IsChangeOrientation),
+                o => o.IsChangeOrientation,
+                (o, v) => o.IsChangeOrientation = v);
+
+        #region PublicProperties
 
         public string Title
         {
@@ -117,37 +126,65 @@ namespace MTQtoolEditor.Controls
 
                 if (_gridLink != null && _definitionIndex != null)
                 {
-                    if (value)
+                    if (_hideDirection is HideDirectionType.Left or HideDirectionType.Right) // Columns
                     {
-                        if (_hideDirection is HideDirectionType.Left or HideDirectionType.Right)
+                        var cd = _gridLink.ColumnDefinitions;
+                        var definition = cd[_definitionIndex.Value];
+                        
+                        if (!value) // Expand
                         {
-                            var cd = _gridLink.ColumnDefinitions;
+                            IsChangeOrientation = false;
+                            definition.Width = GridLength.Star;
                             
-                            cd[_definitionIndex.Value].Width = GridLength.Parse("36");
+                            if (GridSizeHolder.GetMinSize(definition) is { } mw)
+                            {
+                                definition.MinWidth = mw;
+                            }
+
+                            if (GridSizeHolder.GetActualSize(definition) is { } aw)
+                            {
+                                // ReSharper disable once SpecifyACultureInStringConversionExplicitly
+                                definition.Width = GridLength.Parse(aw.ToString());
+                            }
+
                             _gridLink.ColumnDefinitions = cd;
                         }
-                        else
+                        else // Collapse
                         {
-                            var rd = _gridLink.RowDefinitions;
-                            
-                            rd[_definitionIndex.Value].Height = GridLength.Parse("36");
-                            _gridLink.RowDefinitions = rd;
+                            IsChangeOrientation = true;
+                            GridSizeHolder.SetSize(definition);
+                            definition.Width = GridLength.Parse("36");
+                            definition.MinWidth = 0;
+                            _gridLink.ColumnDefinitions = cd;
                         }
                     }
-                    else
+                    else // Rows
                     {
-                        if (_hideDirection is HideDirectionType.Left or HideDirectionType.Right)
+                        var rd = _gridLink.RowDefinitions;
+                        var definition = rd[_definitionIndex.Value];
+                        
+                        if (!value) // Expand
                         {
-                            var cd = _gridLink.ColumnDefinitions;
+                            definition.Height = GridLength.Star;
 
-                            cd[_definitionIndex.Value].Width = GridLength.Star;
-                            _gridLink.ColumnDefinitions = cd;
+                            if (GridSizeHolder.GetMinSize(definition) is { } mh)
+                            {
+                                definition.MinHeight = mh;
+                            }
+
+                            if (GridSizeHolder.GetActualSize(definition) is { } ah)
+                            {
+                                // ReSharper disable once SpecifyACultureInStringConversionExplicitly
+                                definition.Height = GridLength.Parse(ah.ToString());
+                            }
+
+                            _gridLink.RowDefinitions = rd;
                         }
-                        else
+                        else // Collapse
                         {
-                            var rd = _gridLink.RowDefinitions;
-
-                            rd[_definitionIndex.Value].Height = GridLength.Star;
+                            GridSizeHolder.SetSize(definition);
+                            definition.Height = GridLength.Parse("36");
+                            definition.MinHeight = 0;
                             _gridLink.RowDefinitions = rd;
                         }
                     }
@@ -173,12 +210,6 @@ namespace MTQtoolEditor.Controls
             set => SetAndRaise(IconProperty, ref _icon, value);
         }
 
-        protected string HideDirectionIcon
-        {
-            set => SetAndRaise(HideDirectionIconProperty, ref _hideDirectionIcon, value);
-            get => _hideDirectionIcon;
-        }
-
         public Grid? GridLink
         {
             set => SetAndRaise(GridLinkProperty, ref _gridLink, value);
@@ -191,6 +222,24 @@ namespace MTQtoolEditor.Controls
             get => _definitionIndex;
         }
 
+        #endregion
+
+        #region ProtectedProperties
+
+        protected string HideDirectionIcon
+        {
+            set => SetAndRaise(HideDirectionIconProperty, ref _hideDirectionIcon, value);
+            get => _hideDirectionIcon;
+        }
+
+        protected bool IsChangeOrientation
+        {
+            set => SetAndRaise(IsChangeOrientationProperty, ref _isChangeOrientation, value);
+            get => _isChangeOrientation;
+        }
+
+        #endregion
+        
         public PanelHeader()
         {
             InitializeComponent();
@@ -213,7 +262,7 @@ namespace MTQtoolEditor.Controls
             };
         }
 
-        private void ToggleButton_OnClick(object? sender, RoutedEventArgs e)
+        private void ToggleState(object? sender, RoutedEventArgs e)
         {
             IsCollapsed = !_isCollapsed;
         }
