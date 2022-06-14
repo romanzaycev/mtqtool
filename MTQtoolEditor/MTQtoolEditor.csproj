@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="SimpleInjector" Version="5.3.3" />
         <ProjectReference Include="..\MTQtoolRuntime\MTQtoolRuntime.csproj" />
         <PackageReference Include="Avalonia" Version="0.10.13" />
         <PackageReference Include="Avalonia.Desktop" Version="0.10.13" />
